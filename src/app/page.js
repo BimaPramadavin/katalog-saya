@@ -27,13 +27,13 @@ export default function Home() {
     <main className="min-h-screen bg-white text-black font-sans selection:bg-blue-100">
       {/* Navbar Mobile Friendly */}
       <nav className="p-4 md:p-6 border-b flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-50">
-        <h1 className="text-xl md:text-2xl font-black italic tracking-tighter text-blue-600 uppercase">TOKO.KU</h1>
+        <h1 className="text-xl md:text-2xl font-black italic tracking-tighter text-blue-600 uppercase">LEBAK_MARKETT</h1>
         <a href="/admin" className="text-[10px] font-bold text-gray-400 border border-gray-200 px-3 py-1 rounded-full hover:bg-gray-50 transition">ADMIN</a>
       </nav>
 
       <div className="p-4 md:p-10 max-w-7xl mx-auto">
         <div className="mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">STOK TERBARU</h2>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">NEW RELEASED</h2>
           <div className="h-1.5 w-20 bg-blue-600 mt-2 rounded-full"></div>
         </div>
 
@@ -72,7 +72,7 @@ export default function Home() {
         )}
       </div>
       <footer className="py-10 text-center text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em]">
-        © 2024 Toko.ku Digital Catalog
+        © 2024 Lebak_Markett Digital Catalog
       </footer>
     </main>
   );
