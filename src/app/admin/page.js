@@ -94,7 +94,7 @@ export default function AdminPage() {
           <p className="text-zinc-500 text-[10px] mb-8 uppercase tracking-[0.3em] font-bold">Secure Access</p>
           <form onSubmit={(e) => {
             e.preventDefault();
-            if(passInput === "admin123") { setIsLoggedIn(true); localStorage.setItem("admin_access", "true"); }
+            if(passInput === "awiligarsolid") { setIsLoggedIn(true); localStorage.setItem("admin_access", "true"); }
             else alert("Password Salah!");
           }} className="space-y-4">
             <input type="password" placeholder="••••••••" className="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-center outline-none focus:ring-2 ring-white/10 transition-all text-white" onChange={e => setPassInput(e.target.value)} />
