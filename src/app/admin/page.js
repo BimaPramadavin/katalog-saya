@@ -94,7 +94,7 @@ export default function AdminPage() {
           <p className="text-zinc-500 text-[10px] mb-8 uppercase tracking-[0.3em] font-bold">Secure Access</p>
           <form onSubmit={(e) => {
             e.preventDefault();
-            if(passInput === "awiligarsolid") { setIsLoggedIn(true); localStorage.setItem("admin_access", "true"); }
+            if(passInput === "admin123") { setIsLoggedIn(true); localStorage.setItem("admin_access", "true"); }
             else alert("Password Salah!");
           }} className="space-y-4">
             <input type="password" placeholder="••••••••" className="w-full bg-black border border-zinc-800 p-4 rounded-2xl text-center outline-none focus:ring-2 ring-white/10 transition-all text-white" onChange={e => setPassInput(e.target.value)} />
@@ -155,7 +155,7 @@ export default function AdminPage() {
                     <div className="w-full bg-zinc-50 border-2 border-dashed border-zinc-200 p-5 rounded-2xl flex flex-col items-center justify-center gap-2 group-hover:bg-zinc-100 group-hover:border-zinc-300 transition-all">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400 group-hover:text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                       <span className="text-[10px] font-bold text-zinc-400 group-hover:text-black uppercase tracking-tight text-center leading-tight">
-                        {file ? file.name : "Choose File"}
+                        {file ? file.name : "Klik/Seret Foto Produk"}
                       </span>
                     </div>
                   </div>
