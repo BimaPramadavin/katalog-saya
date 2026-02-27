@@ -1,79 +1,118 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
-export default function Home() {
+export default function KatalogPage() {
   const [produk, setProduk] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const NOMOR_WA = "6281234567890"; // GANTI DENGAN NOMOR KAMU
-
   useEffect(() => {
-    async function ambilData() {
-      const { data, error } = await supabase.from("produk").select("*").order("id", { ascending: false });
-      if (error) console.error("Error:", error.message);
-      else setProduk(data || []);
-      setLoading(false);
-    }
     ambilData();
   }, []);
 
-  const pesanKeWA = (item) => {
-    const teks = `Halo Admin, saya mau pesan:%0A%0A*${item.nama}*%0AHarga: Rp ${item.harga?.toLocaleString()}%0ASize: ${item.size || "-"}%0A%0AApakah masih ada?`;
-    window.open(`https://wa.me/${NOMOR_WA}?text=${teks}`, "_blank");
+  const ambilData = async () => {
+    const { data } = await supabase.from("produk").select("*").order("id", { ascending: false });
+    setProduk(data || []);
+    setLoading(false);
   };
 
+  const kirimWA = (item) => {
+    const pesan = `Halo, saya tertarik dengan produk: *${item.nama}* - Rp ${item.harga.toLocaleString()}. Apakah masih tersedia?`;
+    const link = `https://wa.me/62085735831982?text=${encodeURIComponent(pesan)}`; // Ganti nomor WA kamu
+    window.open(link, "_blank");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-zinc-100 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-white text-black font-sans selection:bg-blue-100">
-      {/* Navbar Mobile Friendly */}
-      <nav className="p-4 md:p-6 border-b flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-50">
-        <h1 className="text-xl md:text-2xl font-black italic tracking-tighter text-blue-600 uppercase">LEBAK_MARKETT</h1>
-        <a href="/admin" className="text-[10px] font-bold text-gray-400 border border-gray-200 px-3 py-1 rounded-full hover:bg-gray-50 transition">ADMIN</a>
+    <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
+      
+      {/* NAVIGATION - Glassmorphism Sticky */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100 px-6 py-6 md:px-20 flex justify-between items-center">
+        <h1 className="text-xl font-black italic tracking-tighter uppercase leading-none">
+          Lebak_Market<span className="text-zinc-400">T</span>
+        </h1>
+        <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">
+          <a href="#" className="text-black">Katalog</a>
+          <a href="#" className="hover:text-black transition-colors">About</a>
+          <a href="#" className="hover:text-black transition-colors">Contact</a>
+        </div>
       </nav>
 
-      <div className="p-4 md:p-10 max-w-7xl mx-auto">
-        <div className="mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">NEW RELEASED</h2>
-          <div className="h-1.5 w-20 bg-blue-600 mt-2 rounded-full"></div>
-        </div>
+      {/* HERO SECTION */}
+      <section className="px-6 md:px-20 py-16 md:py-24 border-b border-zinc-100">
+        <h2 className="text-5xl md:text-8xl font-black italic tracking-tighter uppercase leading-[0.85] mb-6">
+          Selected <br /> <span className="text-zinc-300">Goods 2026</span>
+        </h2>
+        <p className="max-w-md text-zinc-500 text-sm leading-relaxed">
+          Koleksi pilihan terbaik dengan kualitas terjamin. Setiap barang telah melewati proses pemeriksaan ketat untuk memastikan keaslian dan kondisi terbaik bagi koleksi Anda.
+        </p>
+      </section>
 
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-          </div>
-        ) : (
-          /* Grid yang responsif: 1 kolom di HP sangat kecil, 2 kolom di HP biasa, 4 di Laptop */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {produk.map((item) => (
-              <div key={item.id} className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
-                <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
-                  <img src={item.image_url} alt={item.nama} className="w-full h-full object-cover" />
-                </div>
-                
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-bold text-gray-800 text-lg mb-1 uppercase tracking-tight">{item.nama}</h3>
-                  <p className="text-blue-600 font-black text-xl mb-4">Rp {item.harga?.toLocaleString()}</p>
-                  
-                  <div className="flex gap-2 mb-6">
-                    <span className="bg-gray-100 px-3 py-1.5 rounded-lg text-[10px] font-bold text-gray-500 uppercase">Size: {item.size || "-"}</span>
-                    <span className="bg-gray-100 px-3 py-1.5 rounded-lg text-[10px] font-bold text-gray-500 uppercase">{item.kondisi || "-"}</span>
-                  </div>
-
-                  <button 
-                    onClick={() => pesanKeWA(item)}
-                    className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-black text-white hover:bg-blue-600 transition-colors shadow-lg active:scale-95"
-                  >
-                    Beli Sekarang
-                  </button>
+      {/* GRID KATALOG */}
+      <main className="px-6 md:px-20 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+          {produk.map((item) => (
+            <div key={item.id} className="group relative cursor-pointer" onClick={() => kirimWA(item)}>
+              {/* Image Container */}
+              <div className="aspect-[4/5] overflow-hidden bg-zinc-100 rounded-3xl mb-6 shadow-sm group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
+                <img 
+                  src={item.image_url} 
+                  alt={item.nama}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                {/* Badge Condition */}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[12px] font-black uppercase tracking-widest shadow-sm">
+                    Cond: {item.kondisi || '9/10'}
+                  </span>
                 </div>
               </div>
-            ))}
+
+              {/* Info Container */}
+              <div className="space-y-1">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-black text-sm uppercase tracking-tight leading-tight max-w-[70%]">
+                    {item.nama}
+                  </h3>
+                  <span className="text-xs font-bold text-zinc-400 tracking-tighter uppercase">
+                    {item.size || 'ALL SIZE'}
+                  </span>
+                </div>
+                <p className="text-lg font-black italic tracking-tighter text-blue-600">
+                  IDR {item.harga?.toLocaleString()}
+                </p>
+              </div>
+
+              {/* Hover Trigger - View Detail Button */}
+              <div className="mt-4 overflow-hidden h-0 group-hover:h-12 transition-all duration-500">
+                <button className="w-full h-full bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl flex items-center justify-center gap-2">
+                  Amankan Sekarang
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="px-6 md:px-20 py-20 bg-zinc-50 border-t border-zinc-100 mt-20">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+          <h1 className="text-3xl font-black italic tracking-tighter uppercase">Lebak_Markett</h1>
+          <div className="text-center md:text-right">
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Developed with Passion</p>
+            <p className="text-xs text-zinc-500 italic">© 2026 All Rights Reserved.</p>
           </div>
-        )}
-      </div>
-      <footer className="py-10 text-center text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em]">
-        © 2024 Lebak_Markett Digital Catalog
+        </div>
       </footer>
-    </main>
+
+    </div>
   );
 }
